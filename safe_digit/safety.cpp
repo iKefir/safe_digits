@@ -8,13 +8,13 @@ struct unsigned_tag {};
 struct signed_tag {};
 
 
-template <typename T>
+template <bool T>
 struct checked_traits {
     typedef signed_tag tag;
 };
 
 template <>
-struct checked_traits<unsigned> {
+struct checked_traits<false> {
     typedef unsigned_tag tag;
 };
 
@@ -83,12 +83,12 @@ struct checked {
     }
     
     checked operator+=(checked& rhs) {
-        data = check_add(data, rhs.data, typename checked_traits<T>::tag());
+        data = check_add(data, rhs.data, typename checked_traits<std::numeric_limits<T>::is_signed>::tag());
         return *this;
     }
     
     checked operator-=(checked rhs) {
-        data = check_sub(data, rhs.data, typename checked_traits<T>::tag());
+        data = check_sub(data, rhs.data, typename checked_traits<std::numeric_limits<T>::is_signed>::tag());
         return *this;
     }
     
@@ -98,12 +98,12 @@ struct checked {
     }
     
     checked operator/=(checked rhs) {
-        data = check_div(data, rhs.data, typename checked_traits<T>::tag());
+        data = check_div(data, rhs.data, typename checked_traits<std::numeric_limits<T>::is_signed>::tag());
         return *this;
     }
     
     checked operator-() {
-        data = check_unary(data, typename checked_traits<T>::tag());
+        data = check_unary(data, typename checked_traits<std::numeric_limits<T>::is_signed>::tag());
         return *this;
     }
     
