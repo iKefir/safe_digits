@@ -53,7 +53,7 @@ T check_mul(T left, T right) {
 template <typename T>
 T check_div(T left, T right, signed_tag) {
     assert(right != 0);
-    assert((left == std::numeric_limits<T>::min()) && (right == -1));
+    assert(!((left == std::numeric_limits<T>::min()) && (right == -1)));
     return left / right;
 }
 
